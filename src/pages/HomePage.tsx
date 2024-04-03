@@ -1,4 +1,4 @@
-import { ListVideo } from 'components/ListVideo'
+import { ListVideo } from '@/components/ListVideo'
 
 export function HomePage() {
   return (

@@ -1,15 +1,15 @@
-import logo from 'assets/imgs/tiktok-logo.png'
+import logo from '@/assets/imgs/tiktok-logo.png'
 
 import { FormEvent, useState } from 'react'
-import { Button } from 'components/Button'
-import { Dropdown } from 'components/Dropdown'
-import { SearchResult } from 'components/SearchResult'
+import { Button } from '@/components/Button'
+import { Dropdown } from '@/components/Dropdown'
+import { SearchResult } from '@/components/SearchResult'
 
-import { config } from 'config'
+import { config } from '@/config'
 
 import { Search, EllipsisVertical, Plus } from 'lucide-react'
-import { useLoginModalContext } from 'contexts/Consumers/useLoginModalContext'
-import { useUserContext } from 'contexts/Consumers/useUserContext'
+import { useLoginModalContext } from '@/contexts/Consumers/useLoginModalContext'
+import { useUserContext } from '@/contexts/Consumers/useUserContext'
 
 export function Header() {
   const [isShowResult, setIsShowResult] = useState(false)

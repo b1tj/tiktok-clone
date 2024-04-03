@@ -1,4 +1,4 @@
-import { Video } from 'components/Video'
+import { Video } from '@/components/Video'
 
 export function ListVideo() {
   return (

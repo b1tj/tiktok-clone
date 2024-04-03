@@ -1,6 +1,6 @@
 import React, { useRef } from 'react'
-import userImg from 'assets/imgs/mr_freshjpg.jpg'
-import { Button } from 'components/Button'
+import userImg from '@/assets/imgs/mr_freshjpg.jpg'
+import { Button } from '@/components/Button'
 import {
   Bookmark,
   Forward,
@@ -9,8 +9,8 @@ import {
   Music,
 } from 'lucide-react'
 
-import previewImg from 'assets/imgs/mr_freshjpg.jpg'
-import videoSrc from 'assets/videos/Download.mp4'
+import previewImg from '@/assets/imgs/mr_freshjpg.jpg'
+import videoSrc from '@/assets/videos/Download.mp4'
 
 const mockHashtags = [
   {

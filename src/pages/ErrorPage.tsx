@@ -1,5 +1,5 @@
 import { useRouteError, isRouteErrorResponse } from 'react-router-dom'
-import { Header } from 'layouts/Header'
+import { Header } from '@/layouts/Header'
 
 export function ErrorPage() {
   const error = useRouteError()

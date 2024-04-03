@@ -1,5 +1,5 @@
 import { useContext } from 'react'
-import { LoginModalContext } from '../Providers/LoginModalContext'
+import { LoginModalContext } from '@/contexts/Providers/LoginModalContext'
 
 export function useLoginModalContext() {
   const context = useContext(LoginModalContext)

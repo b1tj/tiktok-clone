@@ -6,14 +6,14 @@ import {
   Users,
   Video,
 } from 'lucide-react'
-import { Button } from 'components/Button'
-import { LoginModal } from 'components/LoginModal'
+import { Button } from '@/components/Button'
+import { LoginModal } from '@/components/LoginModal'
 
-import campaignBg from 'assets/imgs/campaign-background.png'
-import { config } from 'config'
+import campaignBg from '@/assets/imgs/campaign-background.png'
+import { config } from '@/config'
 import { NavLink, useLocation } from 'react-router-dom'
-import { useLoginModalContext } from 'contexts/Consumers/useLoginModalContext'
-import { useUserContext } from 'contexts/Consumers/useUserContext'
+import { useLoginModalContext } from '@/contexts/Consumers/useLoginModalContext'
+import { useUserContext } from '@/contexts/Consumers/useUserContext'
 
 const navItems = [
   {

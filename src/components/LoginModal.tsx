@@ -7,10 +7,10 @@ import {
   Line,
   QrCode,
   Twitter,
-} from 'assets/icons/icons'
-import { Button } from 'components/Button'
+} from '@/assets/icons/icons'
+import { Button } from '@/components/Button'
 import { useEffect, useState } from 'react'
-import { useUserContext } from 'contexts/Consumers/useUserContext'
+import { useUserContext } from '@/contexts/Consumers/useUserContext'
 
 const loginItems = [
   {
