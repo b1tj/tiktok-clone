@@ -48,17 +48,17 @@ export function UserContextProvider({ children }: UserContextProviderProps) {
   //fetch user from an api
   useEffect(() => {
     //fetch user and setUser here
-    const fetchUser = () => {
-      setLoading(true)
-      fetch('https://randomuser.me/api/')
-        .then((response) => response.json())
-        .then((result) => {
-          setUser(result.results[0])
-          setLoading(false)
-        })
-        .catch((error) => console.log('An error occured: ', error))
-    }
-    fetchUser()
+    // const fetchUser = () => {
+    //   setLoading(true)
+    //   fetch('https://randomuser.me/api/')
+    //     .then((response) => response.json())
+    //     .then((result) => {
+    //       setUser(result.results[0])
+    //       setLoading(false)
+    //     })
+    //     .catch((error) => console.log('An error occured: ', error))
+    // }
+    // fetchUser()
   }, [])
 
   return (

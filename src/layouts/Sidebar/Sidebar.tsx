@@ -1,82 +1,44 @@
-import {
-  Compass,
-  Home,
-  UserRound,
-  UserRoundPlus,
-  Users,
-  Video,
-} from 'lucide-react'
 import { Button } from '@/components/Button'
 import { LoginModal } from '@/components/LoginModal'
 
 import campaignBg from '@/assets/imgs/campaign-background.png'
+
 import { config } from '@/config'
+
 import { NavLink, useLocation } from 'react-router-dom'
+
+import { itemConstants } from '@/shared/constants/items'
+
 import { useLoginModalContext } from '@/contexts/Consumers/useLoginModalContext'
 import { useUserContext } from '@/contexts/Consumers/useUserContext'
 
-const navItems = [
-  {
-    id: 'home',
-    Icon: Home,
-    title: 'For You',
-    to: '/en',
-  },
-  {
-    id: 'following',
-    Icon: UserRoundPlus,
-    title: 'Following',
-    to: '/following',
-  },
-  {
-    id: 'friends',
-    Icon: Users,
-    title: 'Friends',
-    to: '/friends',
-  },
-  {
-    id: 'explore',
-    Icon: Compass,
-    title: 'Explore',
-    to: '/explore',
-  },
-  {
-    id: 'live',
-    Icon: Video,
-    title: 'LIVE',
-    to: '/live',
-  },
-  {
-    id: 'profile',
-    Icon: UserRound,
-    title: 'Profile',
-    to: '/profile',
-  },
-]
+const { HOME, EXPLORE, FOLLOWING, FRIENDS, LIVE, PROFILE } = itemConstants
+
+const navItems = [HOME, FOLLOWING, FRIENDS, EXPLORE, LIVE, PROFILE]
 
 const followingList: { id: string }[] = []
 
 export function Sidebar() {
-  // const [isShow, setIsShow] = useState(false)
   const { isShow, open, close } = useLoginModalContext()
   const { user, loading } = useUserContext()
   const location = useLocation()
 
   return (
     <>
-      <aside className="flex h-full w-[232px] flex-col pb-[26px] pl-[8px] pt-[20px]">
+      {/* Big Sidebar */}
+      <aside className="hidden w-[232px] flex-col pb-[26px] pl-[8px] pt-[20px] min-[1072px]:flex">
         <div className="fixed top-[80px] w-[240px]">
           <nav className="mb-[8px]">
             <ul>
-              {navItems.map((item) => {
+              {navItems.map((navItem) => {
                 let isActive = false
-                if (item.id === 'home') {
+                if (navItem.id === 'home') {
                   isActive =
                     location.pathname === '/' ||
                     location.pathname === '/en' ||
                     location.pathname === '/foryou'
                 } else {
-                  isActive = location.pathname === item.to
+                  isActive = location.pathname === navItem.path
                 }
 
                 const navLinkCssClasses = `h-[48px] cursor-pointer rounded-[4px] p-[8px] text-[18px] font-semibold
@@ -84,13 +46,13 @@ export function Sidebar() {
                   ${isActive ? 'text-primary' : 'text-text'}`
 
                 return (
-                  <li key={item.id} className={navLinkCssClasses}>
+                  <li key={navItem.id} className={navLinkCssClasses}>
                     <NavLink
-                      to={item.to}
+                      to={navItem.path}
                       className="flex-start flex items-center gap-[8px]"
                     >
-                      <item.Icon size={28} />
-                      <span className="tracking-wide">{item.title}</span>
+                      <navItem.Icon size={28} />
+                      <span className="tracking-wide">{navItem.name}</span>
                     </NavLink>
                   </li>
                 )
@@ -166,6 +128,49 @@ export function Sidebar() {
           </div>
         </div>
       </aside>
+
+      {/* Small Sidebar */}
+      <aside
+        className="z-50 hidden h-screen w-[72px] shrink-0
+        items-center  max-[1071px]:block"
+      >
+        <div
+          className="fixed mt-[60px] h-full border-r border-r-ghost-border bg-white 
+        p-[0_8px] pt-[12px] shadow-[0_2px_8px] shadow-ghost-border"
+        >
+          <nav>
+            <ul className="flex flex-col gap-1">
+              {navItems.map((navItem) => {
+                let isActive = false
+                if (navItem.id === 'home') {
+                  isActive =
+                    location.pathname === '/' ||
+                    location.pathname === '/en' ||
+                    location.pathname === '/foryou'
+                } else {
+                  isActive = location.pathname === navItem.path
+                }
+
+                const navLinkCssClasses = `h-[48px] cursor-pointer rounded-[4px] p-[12px_16px] text-[18px] font-semibold
+                  transition-[background] delay-0 duration-200 ease-in-out hover:bg-ghost 
+                  ${isActive ? 'text-primary' : 'text-text'}`
+
+                return (
+                  <li key={navItem.id} className={navLinkCssClasses}>
+                    <NavLink
+                      to={navItem.path}
+                      className="flex-start flex items-center justify-center gap-[8px]"
+                    >
+                      <navItem.Icon size={24} />
+                    </NavLink>
+                  </li>
+                )
+              })}
+            </ul>
+          </nav>
+        </div>
+      </aside>
+
       <LoginModal show={isShow} close={close} />
     </>
   )

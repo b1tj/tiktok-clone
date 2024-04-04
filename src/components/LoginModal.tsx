@@ -1,59 +1,60 @@
-import { UserRound, X } from 'lucide-react'
-import {
-  Apple,
-  Facebook,
-  Google,
-  KakaoTalk,
-  Line,
-  QrCode,
-  Twitter,
-} from '@/assets/icons/icons'
-import { Button } from '@/components/Button'
+// import { UserRound, X } from 'lucide-react'
+// import {
+//   Apple,
+//   Facebook,
+//   Google,
+//   KakaoTalk,
+//   Line,
+//   QrCode,
+//   Twitter,
+// } from '@/assets/icons/icons'
 import { useEffect, useState } from 'react'
-import { useUserContext } from '@/contexts/Consumers/useUserContext'
+import { SignInOption } from '@/components/Auth/SignInOption'
+import { Button } from '@/components/Button'
+import { X } from 'lucide-react'
 
-const loginItems = [
-  {
-    id: 'qr_code',
-    Icon: QrCode,
-    title: 'Use QR code',
-  },
-  {
-    id: 'phone_email_username',
-    Icon: UserRound,
-    title: 'Use phone / email / username',
-  },
-  {
-    id: 'facebook',
-    Icon: Facebook,
-    title: 'Continue with Facebook',
-  },
-  {
-    id: 'google',
-    Icon: Google,
-    title: 'Continue with Google',
-  },
-  {
-    id: 'twitter',
-    Icon: Twitter,
-    title: 'Continue with Twitter',
-  },
-  {
-    id: 'line',
-    Icon: Line,
-    title: 'Continue with LINE',
-  },
-  {
-    id: 'kakaotalk',
-    Icon: KakaoTalk,
-    title: 'Continue with KakaoTalk',
-  },
-  {
-    id: 'apple',
-    Icon: Apple,
-    title: 'Continue with Apple',
-  },
-]
+// const loginItems = [
+//   {
+//     id: 'qr_code',
+//     Icon: QrCode,
+//     title: 'Use QR code',
+//   },
+//   {
+//     id: 'phone_email_username',
+//     Icon: UserRound,
+//     title: 'Use phone / email / username',
+//   },
+//   {
+//     id: 'facebook',
+//     Icon: Facebook,
+//     title: 'Continue with Facebook',
+//   },
+//   {
+//     id: 'google',
+//     Icon: Google,
+//     title: 'Continue with Google',
+//   },
+//   {
+//     id: 'twitter',
+//     Icon: Twitter,
+//     title: 'Continue with Twitter',
+//   },
+//   {
+//     id: 'line',
+//     Icon: Line,
+//     title: 'Continue with LINE',
+//   },
+//   {
+//     id: 'kakaotalk',
+//     Icon: KakaoTalk,
+//     title: 'Continue with KakaoTalk',
+//   },
+//   {
+//     id: 'apple',
+//     Icon: Apple,
+//     title: 'Continue with Apple',
+//   },
+// ]
 
 type LoginModalProps = {
   show: boolean
@@ -62,8 +63,6 @@ type LoginModalProps = {
 
 export function LoginModal({ show, close }: LoginModalProps) {
   const [render, setRender] = useState(show)
-
-  const { handleLoginGoogle } = useUserContext()
 
   useEffect(() => {
     if (show) setRender(true)
@@ -81,11 +80,11 @@ export function LoginModal({ show, close }: LoginModalProps) {
           className={`${
             show
               ? 'animate-fade-jump-out animate-duration-300'
-              : 'animate-fade-jump-in animate-duration-100'
+              : 'animate-fade-jump-in animate-duration-200'
           } 
-          relative h-[642px] w-[483px] rounded-lg bg-white`}
+          relative  flex h-[642px]  w-[483px] items-center justify-center rounded-lg bg-white p-[64px_56px_0]`}
         >
-          <div className="px-[56px] pt-[64px]">
+          {/* <div className="px-[56px] pt-[64px]">
             <h2 className="mb-[16px] text-center text-[33px] font-bold tracking-tight text-text">
               Log in to TikTok
             </h2>
@@ -149,7 +148,15 @@ export function LoginModal({ show, close }: LoginModalProps) {
                 Sign up
               </span>
             </a>
-          </div>
+          </div> */}
+          <Button
+            intent="round"
+            className="absolute right-[16px] top-[16px] h-[24px] w-[24px] scale-[1.7] bg-ghost p-0"
+            onClick={close}
+          >
+            <X size={15} />
+          </Button>
+          <SignInOption />
         </div>
       </div>
     )

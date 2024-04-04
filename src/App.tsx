@@ -1,4 +1,5 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+
 import { ErrorPage } from '@/pages/ErrorPage.tsx'
 import { FollowingPage } from '@/pages/FollowingPage.tsx'
 import { FriendsPage } from '@/pages/FriendsPage.tsx'
@@ -8,10 +9,10 @@ import { ProfilePage } from '@/pages/ProfilePage.tsx'
 import { HomePage } from '@/pages/HomePage.tsx'
 import { Layout } from '@/layouts/Layout.tsx'
 
-import { LoginModalProvider } from '@/contexts/Providers/LoginModalContext.tsx'
-import { UserContextProvider } from '@/contexts/Providers/UserContext.tsx'
-import { SignUp } from '@/components/Auth/SignUp.tsx'
-import { SignIn } from '@/components/Auth/SignIn.tsx'
+import { useLoginModalContext } from '@/contexts/Consumers/useLoginModalContext'
+
+import { SignUpPage } from '@/pages/SignUpPage'
+import { SignInPage } from '@/pages/SignInPage'
 
 const router = createBrowserRouter([
   {
@@ -54,20 +55,23 @@ const router = createBrowserRouter([
   },
   {
     path: '/signup',
-    element: <SignUp />,
+    element: <SignUpPage />,
   },
   {
     path: '/login',
-    element: <SignIn />,
+    element: <SignInPage />,
   },
 ])
 
 export function App() {
+  // Checking if current modal popup and prevent background scrolling
+  const { isShow } = useLoginModalContext()
+
   return (
-    <UserContextProvider>
-      <LoginModalProvider>
+    <>
+      <div className={`${isShow ? 'h-screen overflow-y-hidden' : ''}`}>
         <RouterProvider router={router} />
-      </LoginModalProvider>
-    </UserContextProvider>
+      </div>
+    </>
   )
 }

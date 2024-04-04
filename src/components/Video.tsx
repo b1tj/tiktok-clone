@@ -64,7 +64,7 @@ export function Video() {
     <div
       className="relative flex max-w-[692px] gap-[12px] py-[20px] after:absolute
      after:bottom-0 after:left-0 after:h-[1px] after:w-full after:scale-y-50 after:bg-divider
-     after:content-['']"
+     after:content-[''] max-[1071px]:w-[592px] max-[1071px]:max-w-[592px]"
     >
       <a href="/@No.Left.Over.Food" className="h-[56px] shrink-0 grow-0">
         <div className="h-[56px] w-[56px] overflow-hidden rounded-full">

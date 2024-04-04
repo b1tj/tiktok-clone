@@ -13,7 +13,7 @@ import { useUserContext } from '@/contexts/Consumers/useUserContext'
 
 export function Header() {
   const [isShowResult, setIsShowResult] = useState(false)
-  const { open } = useLoginModalContext()
+  const { isShow, open } = useLoginModalContext()
   const { user } = useUserContext()
 
   const openResult = () => setIsShowResult(true)
@@ -24,14 +24,18 @@ export function Header() {
   }
 
   return (
-    <div className="sticky top-0 z-[999] flex h-[60px] w-full items-center justify-between bg-white pl-4 pr-6 shadow-[0px_1px_1px_#0000001f]">
+    <div
+      className={`fixed top-0 z-[999] flex h-[60px] items-center
+      justify-between bg-white pl-4 pr-6 shadow-[0px_1px_1px_#0000001f]
+      ${isShow ? 'w-[calc(100%-8px)]' : 'w-full'}`}
+    >
       <div className="flex min-w-[300px] items-center">
         <a href={config.websiteURL} className="block w-fit">
           <img src={logo} alt="TopTop" className="h-10 flex-shrink-0" />
         </a>
       </div>
 
-      <div className="relative flex w-[516px] min-w-[200px] px-[8px]">
+      <div className="relative flex w-[516px] min-w-[200px] px-[8px] max-[780px]:hidden">
         <SearchResult visible={isShowResult} close={closeResult}>
           <form
             className="group flex w-[500px] min-w-[200px] items-center overflow-hidden

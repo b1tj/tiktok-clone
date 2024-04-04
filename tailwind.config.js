@@ -21,12 +21,12 @@ export default {
       animation: {
         'fade-jump-in': 'fade-jump-in 3s ease-out forwards',
         'fade-jump-out':
-          'fade-jump-out 3s cubic-bezier(0.08, 0.82, 0.17, 1) forwards',
+          'fade-jump-out 1s cubic-bezier(0.08, 0.82, 0.17, 1) forwards',
       },
       keyframes: {
         'fade-jump-in': {
           '0%': { transform: 'scale(1)', opacity: 1 },
-          '100%': { transform: 'scale(0.2)', opacity: 0 },
+          '100%': { transform: 'scale(0)', opacity: 0 },
         },
         'fade-jump-out': {
           '0%': { transform: 'scale(0.3)', opacity: 0 },
