@@ -1,32 +1,28 @@
-import { createContext, useState, ReactNode } from 'react'
+import { createContext, ReactNode, useState } from 'react'
 
-type LoginModalProviderProps = {
-  children: ReactNode
-}
-
-type LoginModalContextType = {
+type LoginModalContextTypes = {
   isShow: boolean
   open: () => void
   close: () => void
 }
 
-export const LoginModalContext = createContext<LoginModalContextType | null>(
+type LoginModalProviderProps = {
+  children: ReactNode
+}
+
+export const LoginModalContext = createContext<LoginModalContextTypes | null>(
   null,
 )
 
 export function LoginModalProvider({ children }: LoginModalProviderProps) {
   const [isShow, setIsShow] = useState(false)
 
-  function open() {
-    if (!isShow) {
-      setIsShow(true)
-    }
+  const open = () => {
+    if (!isShow) setIsShow(true)
   }
 
-  function close() {
-    if (isShow) {
-      setIsShow(false)
-    }
+  const close = () => {
+    if (isShow) setIsShow(false)
   }
 
   return (

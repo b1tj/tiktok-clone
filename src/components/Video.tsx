@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import userImg from '@/assets/imgs/mr_freshjpg.jpg'
 import { Button } from '@/components/Button'
 import {
@@ -7,6 +7,8 @@ import {
   Heart,
   MessageCircleMore,
   Music,
+  Pause,
+  Play,
 } from 'lucide-react'
 
 import previewImg from '@/assets/imgs/mr_freshjpg.jpg'
@@ -55,16 +57,39 @@ const actionItems = [
 
 export function Video() {
   const videoRef = useRef<HTMLVideoElement>(document.createElement('video'))
+  const [isPlaying, setIsPlaying] = useState(false)
+  const [isInView, setIsInView] = useState(false)
 
   const handlePlay = () => {
     if (videoRef) videoRef.current.play()
+    setIsPlaying(true)
   }
 
+  const handlePause = () => {
+    if (videoRef) videoRef.current.pause()
+    setIsPlaying(false)
+  }
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(([entry]) => {
+      setIsInView(entry.isIntersecting)
+    })
+
+    observer.observe(videoRef.current)
+
+    return () => observer.disconnect()
+  }, [isInView])
+
+  useEffect(() => {
+    // if (isInView) handlePlay()
+    // else handlePause()
+  }, [isInView])
+  
   return (
     <div
-      className="relative flex max-w-[692px] gap-[12px] py-[20px] after:absolute
-     after:bottom-0 after:left-0 after:h-[1px] after:w-full after:scale-y-50 after:bg-divider
-     after:content-[''] max-[1071px]:w-[592px] max-[1071px]:max-w-[592px]"
+      className="relative flex h-[calc(100vh-60px)] max-w-[692px] gap-[12px] py-[20px]
+     after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-full after:scale-y-50
+     after:bg-divider after:content-[''] max-[1071px]:w-[592px] max-[1071px]:max-w-[592px]"
     >
       <a href="/@No.Left.Over.Food" className="h-[56px] shrink-0 grow-0">
         <div className="h-[56px] w-[56px] overflow-hidden rounded-full">
@@ -72,9 +97,9 @@ export function Video() {
         </div>
       </a>
 
-      <div className="flex flex-col">
-        <div className="flex gap-[16px]">
-          <div>
+      <div className="flex h-full w-full flex-col">
+        <div className="relative w-full">
+          <div className="mr-[114px] flex shrink flex-col">
             {/* Author unique ID and Name */}
             <a
               href="/@No.Left.Over.Food"
@@ -89,7 +114,7 @@ export function Video() {
             </a>
 
             {/* Description, Hashtag and Music Wrapper*/}
-            <div>
+            <div className="w-full">
               <p className="inline break-words text-[16px]">
                 Im Mr.Fresh I only eat new food not leftover one 😒
               </p>
@@ -98,7 +123,7 @@ export function Video() {
                   <React.Fragment key={index}>
                     <a
                       href={tag.link}
-                      className="text-hashtag  hover:underline"
+                      className="inline w-fit text-hashtag hover:underline"
                     >
                       <strong className="font-semibold">{tag.title}</strong>
                     </a>
@@ -120,19 +145,22 @@ export function Video() {
               </div>
             </div>
           </div>
-          <Button className="mt-[12px] min-w-[96px]">Follow</Button>
+          <Button className="absolute right-0 top-[8px] min-w-[96px] font-medium">
+            Follow
+          </Button>
         </div>
 
-        {/* Video */}
-        <div className="mt-[20px] flex gap-[20px] overflow-hidden">
+        {/* Video & Actions Container */}
+        <div className="mt-[20px] flex h-full select-none items-end gap-[20px] overflow-hidden">
+          {/* Video Container */}
           <div
-            className="relative aspect-[9/16] h-[600px] cursor-pointer overflow-hidden
-           rounded-lg bg-black bg-cover max-[1919px]:h-[calc(316.667px+17.3611vw)]"
+            className="relative aspect-[9/16] h-full cursor-pointer overflow-hidden
+           rounded-lg bg-black bg-cover"
           >
             {/* Canvas placeholder */}
 
             {/* Video Player Wrapper*/}
-            <div className="">
+            <div className="absolute inset-0 h-full">
               {/* Preview Video Picture */}
               <div className="h-full w-full">
                 <img
@@ -140,25 +168,47 @@ export function Video() {
                   className="absolute inset-0 block h-full w-full max-w-full object-contain"
                 />
               </div>
+
               <div className="h-full w-full overflow-hidden rounded-lg">
                 <video
                   ref={videoRef}
                   src={videoSrc}
+                  preload="auto"
                   playsInline
                   className="absolute inset-0 block h-full w-full object-contain"
                   onMouseDown={handlePlay}
                 />
               </div>
-              <div>
-                <div></div>
+
+              {/* Video Controls */}
+              <div className="absolute bottom-[32px] flex w-full px-[12px]">
+                <div
+                  className="p-[10px]"
+                  onClick={isPlaying ? () => handlePause() : () => handlePlay()}
+                >
+                  {isPlaying ? (
+                    <Pause
+                      color="white"
+                      className="fill-white"
+                      size={20}
+                      onClick={handlePlay}
+                    />
+                  ) : (
+                    <Play
+                      color="white"
+                      className="fill-white"
+                      size={20}
+                      onClick={handlePause}
+                    />
+                  )}
+                </div>
                 <div></div>
                 <div></div>
               </div>
-              <div></div>
             </div>
           </div>
 
-          {/* Action Container */}
+          {/* Actions Container */}
           <div className="flex flex-col self-end">
             {actionItems.map((item) => (
               <React.Fragment key={item.id}>

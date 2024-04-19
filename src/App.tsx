@@ -13,6 +13,7 @@ import { useLoginModalContext } from '@/contexts/Consumers/useLoginModalContext'
 
 import { SignUpPage } from '@/pages/SignUpPage'
 import { SignInPage } from '@/pages/SignInPage'
+import { Protected } from '@/components/Protected'
 
 const router = createBrowserRouter([
   {
@@ -37,7 +38,11 @@ const router = createBrowserRouter([
       },
       {
         path: '/friends',
-        element: <FriendsPage />,
+        element: (
+          <Protected>
+            <FriendsPage />
+          </Protected>
+        ),
       },
       {
         path: '/explore',
@@ -49,10 +54,15 @@ const router = createBrowserRouter([
       },
       {
         path: '/profile',
-        element: <ProfilePage />,
+        element: (
+          <Protected>
+            <ProfilePage />
+          </Protected>
+        ),
       },
     ],
   },
+
   {
     path: '/signup',
     element: <SignUpPage />,

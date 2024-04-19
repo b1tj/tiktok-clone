@@ -7,7 +7,7 @@ import { getAuth } from 'firebase/auth'
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: 'AIzaSyCMSR6d9GXVBAV-sEeV-z6ipT8nOk5q6VY',
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
   authDomain: 'tiktok-auth-6ccc2.firebaseapp.com',
   projectId: 'tiktok-auth-6ccc2',
   storageBucket: 'tiktok-auth-6ccc2.appspot.com',

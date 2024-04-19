@@ -1,17 +1,22 @@
+import { App } from '@/App'
+import { AuthContextProvider } from '@/contexts/Providers/AuthContext'
+import { LoginModalProvider } from '@/contexts/Providers/LoginModalContext.tsx'
+import { SnackbarProvider } from '@/contexts/Providers/SnackbarContext'
+import '@/index.css'
+import { StyledEngineProvider } from '@mui/material'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import { App } from '@/App.tsx'
-import '@/index.css'
-
-import { LoginModalProvider } from '@/contexts/Providers/LoginModalContext.tsx'
-import { UserContextProvider } from '@/contexts/Providers/UserContext.tsx'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <UserContextProvider>
+    <AuthContextProvider>
       <LoginModalProvider>
-        <App />
+        <SnackbarProvider>
+          <StyledEngineProvider injectFirst>
+            <App />
+          </StyledEngineProvider>
+        </SnackbarProvider>
       </LoginModalProvider>
-    </UserContextProvider>
+    </AuthContextProvider>
   </React.StrictMode>,
 )

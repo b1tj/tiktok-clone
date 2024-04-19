@@ -3,15 +3,17 @@ export const routeConstants = Object.freeze({
     id: 'login',
     name: 'Login',
     path: '/login',
+    isProtected: true,
   },
   SIGNUP: {
     id: 'signup',
     name: 'SignUp',
     path: '/signup',
+    isProtected: true,
   },
   HOME: {
     id: 'home',
-    name: 'Home',
+    name: 'For You',
     path: '/',
   },
   FOLLOWING: {
@@ -23,6 +25,7 @@ export const routeConstants = Object.freeze({
     id: 'friends',
     name: 'Friends',
     path: '/friends',
+    isProtected: true,
   },
   EXPLORE: {
     id: 'explore',
@@ -31,12 +34,13 @@ export const routeConstants = Object.freeze({
   },
   LIVE: {
     id: 'live',
-    name: 'Live',
+    name: 'LIVE',
     path: '/live',
   },
   PROFILE: {
     id: 'profile',
     name: 'Profile',
     path: '/profile',
+    isProtected: true,
   },
 })

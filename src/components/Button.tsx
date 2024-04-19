@@ -11,11 +11,10 @@ const buttonStyles = cva('button', {
         'text-primary',
         'border-primary',
         'border',
-        'font-semibold',
         'rounded-[2px]',
+        'font-semibold',
       ],
       ghost: [
-        'font-semibold',
         'hover:bg-ghost',
         'border',
         'border-ghost-border',
@@ -26,6 +25,7 @@ const buttonStyles = cva('button', {
         'gap-2',
         'rounded-[2px]',
         'font-[16px]',
+        'font-semibold',
       ],
       fill: [
         'bg-primary',
@@ -33,11 +33,10 @@ const buttonStyles = cva('button', {
         'hover:bg-gradient-to-b',
         'from-[rgba(0,0,0,0.06)]',
         'to-[rgba(0,0,0,0.06)]',
-        'font-semibold',
         'rounded-[4px]',
-        'font-bold',
         'text-[16px]',
         'boder-none',
+        'font-semibold',
       ],
       round: [
         'rounded-full',
@@ -58,33 +57,22 @@ const buttonStyles = cva('button', {
       small: ['px-4', 'py-[1px]', 'h-[36px]'],
       medium: ['p-2', 'rounded-[2px]', 'h-[48px]'],
     },
-    fontWeight: {
-      semibold: ['font-semibold'],
-      bold: ['font-bold'],
-    },
   },
 
   defaultVariants: {
     intent: 'primary',
     size: 'small',
-    fontWeight: 'semibold',
   },
 })
 
 export type ButtonProps = VariantProps<typeof buttonStyles> &
   React.ButtonHTMLAttributes<HTMLButtonElement>
 
-export function Button({
-  className,
-  intent,
-  size,
-  fontWeight,
-  ...props
-}: ButtonProps) {
+export function Button({ className, intent, size, ...props }: ButtonProps) {
   return (
     <button
       {...props}
-      className={twMerge(buttonStyles({ intent, size, fontWeight }), className)}
+      className={twMerge(buttonStyles({ intent, size }), className)}
     />
   )
 }

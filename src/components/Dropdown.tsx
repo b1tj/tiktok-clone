@@ -1,49 +1,56 @@
-import { ReactElement, useState } from 'react'
-
-import {
-  Lightbulb,
-  BookA,
-  CircleHelp,
-  Keyboard,
-  Moon,
-  ChevronLeft,
-} from 'lucide-react'
-
+import { Button } from '@/components/Button'
+import { useAuthContext } from '@/contexts/Consumers/useAuthContext'
+import { useLoginModalContext } from '@/contexts/Consumers/useLoginModalContext'
+import { useLoggedInState } from '@/hooks/useLoggedInState'
+import { dropDownItemConstants } from '@/shared/constants/items'
 import Tippy, { TippyProps } from '@tippyjs/react'
+import { ChevronLeft, LucideIcon } from 'lucide-react'
+import { ReactElement, useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import 'tippy.js/dist/tippy.css'
 import 'tippy.js/themes/light.css'
 
-const items = [
-  {
-    title: 'Live Creator Hub',
-    Icon: Lightbulb,
-  },
-  {
-    title: 'English',
-    Icon: BookA,
-    children: [
-      {
-        id: 'en',
-        title: 'English',
-      },
-      {
-        id: 'vi',
-        title: 'Tiếng Việt (Việt Nam)',
-      },
-    ],
-  },
-  {
-    title: 'Feedback and help',
-    Icon: CircleHelp,
-  },
-  {
-    title: 'Keyboard shortcuts',
-    Icon: Keyboard,
-  },
-  {
-    title: 'Dark mode',
-    Icon: Moon,
-  },
+const {
+  VIEW_PROFILE,
+  DARK_MODE,
+  FAVORITES,
+  FEEDBACK_AND_HELP,
+  GET_COIN,
+  KEYBOARD_SHORTCUTS,
+  LANGUAGES,
+  LIVE_CREATOR_HUB,
+  LIVE_STUDIO,
+  LOGOUT,
+  SETTINGS,
+} = dropDownItemConstants
+
+type DropdownItemType = {
+  id: string
+  label: string
+  Icon: LucideIcon
+  children?: { id: string; label: string }[]
+}
+
+const guestItems: DropdownItemType[] = [
+  LIVE_CREATOR_HUB,
+  LANGUAGES,
+  FEEDBACK_AND_HELP,
+  KEYBOARD_SHORTCUTS,
+  DARK_MODE,
+]
+
+const loggedInItems: DropdownItemType[] = [
+  VIEW_PROFILE,
+  FAVORITES,
+  GET_COIN,
+  LIVE_STUDIO,
+  LIVE_CREATOR_HUB,
+  SETTINGS,
+  LANGUAGES,
+  FEEDBACK_AND_HELP,
+  KEYBOARD_SHORTCUTS,
+  DARK_MODE,
+  LOGOUT,
 ]
 
 const tippyConfig: TippyProps = {
@@ -62,6 +69,24 @@ type DropdownProps = {
 
 export function Dropdown({ children }: DropdownProps) {
   const [selected, setSelected] = useState<number>(-1)
+  const [isLogoutPopupShow, setIsLogoutPopupShow] = useState(false)
+  const isUserLoggedIn = useLoggedInState()
+  const items = isUserLoggedIn ? loggedInItems : guestItems
+
+  const handleLogoutModalClose = () => {
+    setIsLogoutPopupShow(false)
+  }
+
+  const handleSingleItemOnClick = (
+    item: DropdownItemType,
+    itemIndex: number,
+  ) => {
+    setSelected(itemIndex)
+
+    if (item.id === 'logout') {
+      return !isLogoutPopupShow && setIsLogoutPopupShow(true)
+    }
+  }
 
   const handleClose = () => {
     setSelected(-1)
@@ -69,7 +94,7 @@ export function Dropdown({ children }: DropdownProps) {
 
   return (
     <>
-      {selected < 0 || items[selected].children === undefined ? (
+      {selected < 0 || items[selected]?.children === undefined ? (
         <Tippy
           className="overflow-hidden rounded-lg"
           content={
@@ -79,18 +104,18 @@ export function Dropdown({ children }: DropdownProps) {
             >
               {items.map((item, index) => (
                 <li
-                  key={item.title}
-                  onClick={() => setSelected(index)}
-                  className="flex h-[41px] w-full shrink-0 items-center gap-2 whitespace-nowrap py-[10px] pl-4 pr-2 hover:bg-ghost"
+                  key={item.id}
+                  onClick={() => handleSingleItemOnClick(item, index)}
+                  className="flex h-[41px] w-full shrink-0 items-center gap-2 
+                      whitespace-nowrap py-[10px] pl-4 pr-2 hover:bg-ghost"
                 >
                   <item.Icon />
-                  <span>{item.title}</span>
-                  {items.length - 1 === index && <Switch />}
+                  <span>{item.label}</span>
+                  {item.id === 'dark_mode' && <Switch />}
                 </li>
               ))}
             </ul>
           }
-          // Tippy config
           {...tippyConfig}
           onHidden={() => setSelected(-1)}
         >
@@ -98,7 +123,7 @@ export function Dropdown({ children }: DropdownProps) {
         </Tippy>
       ) : (
         <Tippy
-          className=" overflow-hidden rounded-lg"
+          className="overflow-hidden rounded-lg"
           content={
             <div className="m-0 -mx-[9px] -my-[5px] min-w-[223px] bg-white">
               <header className="relative flex h-[50px] items-center">
@@ -113,7 +138,7 @@ export function Dropdown({ children }: DropdownProps) {
                     key={item.id}
                     className="px-[24px] py-[10px] text-[14px] font-semibold leading-[14px] hover:bg-ghost"
                   >
-                    {item.title}
+                    {item.label}
                   </li>
                 ))}
               </ul>
@@ -125,6 +150,8 @@ export function Dropdown({ children }: DropdownProps) {
           {children}
         </Tippy>
       )}
+
+      <LogoutPopup isShow={isLogoutPopupShow} close={handleLogoutModalClose} />
     </>
   )
 }
@@ -141,5 +168,79 @@ function Switch() {
         peer-checked:after:translate-x-[20px] peer-checked:after:border-white peer-focus:outline-none"
       ></div>
     </label>
+  )
+}
+
+type LogoutPopupProps = {
+  close: () => void
+  isShow: boolean
+}
+
+function LogoutPopup({ close, isShow }: LogoutPopupProps) {
+  const [render, setRender] = useState(isShow)
+  const { close: closeLoginModal } = useLoginModalContext()
+  const { signOutUser } = useAuthContext()
+  const navigate = useNavigate()
+
+  const handleOnAnimationEnd = () => {
+    if (!isShow) setRender(false)
+  }
+
+  const handleLogout = () => {
+    try {
+      signOutUser()
+      close()
+      closeLoginModal()
+      setTimeout(() => {
+        navigate(0)
+      }, 1000000)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    if (isShow) setRender(true)
+  }, [isShow])
+
+  return (
+    render && (
+      <div className="fixed left-0 top-0 z-[9999] flex h-screen w-screen items-center justify-center bg-[rgba(0,0,0,0.5)]">
+        <div
+          onAnimationEnd={handleOnAnimationEnd}
+          className={`${
+            isShow
+              ? 'animate-fade-jump-out animate-duration-300'
+              : 'animate-fade-jump-in animate-duration-200'
+          } 
+          flex w-[400px] flex-col items-center rounded-lg bg-white p-[32px]`}
+        >
+          <div className="w-full p-[0_32px] text-center text-2xl font-bold text-text">
+            Are you sure you want to log out?
+          </div>
+          <div className="mt-[16px] flex w-[336px] justify-between">
+            <Button
+              intent="ghost"
+              size="unset"
+              className="flex h-[48px] min-h-[28px] w-[164px] min-w-[106px] 
+              select-none justify-center rounded-[4px] p-[0_10px] text-[16px] font-medium leading-[22px]"
+              onClick={close}
+            >
+              Cancel
+            </Button>
+
+            <Button
+              intent="primary"
+              size="unset"
+              className="h-[48px] min-h-[28px] w-[164px] min-w-[106px] select-none 
+              rounded-[4px] p-[0_10px] text-[16px] font-medium leading-[22px]"
+              onClick={handleLogout}
+            >
+              Log out
+            </Button>
+          </div>
+        </div>
+      </div>
+    )
   )
 }
