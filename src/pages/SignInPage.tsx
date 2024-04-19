@@ -20,16 +20,16 @@ const options = [
 
 export function SignInPage() {
   const { isShow, openSnackbar, closeSnackbar } = useSnackbarContext()
-  const loginState = useRef(useLoggedInState())
+  const loginStateRef = useRef(useLoggedInState())
   const navigate = useNavigate()
 
   const handleOnAnimationEnd = () => {
     if (isShow) closeSnackbar()
-    if (loginState.current) navigate('/', { replace: true })
+    if (loginStateRef.current) navigate('/', { replace: true })
   }
 
   useEffect(() => {
-    if (loginState.current)
+    if (loginStateRef.current)
       openSnackbar('You are logged in, no need to repeat that')
   }, [openSnackbar])
 

@@ -13,7 +13,7 @@ export function useSelectState(
   useEffect(() => {
     const clickHandler = () => {
       if (ref.current) {
-        setIsMenuOpen(false)
+        setIsMenuOpen(() => false)
       }
     }
 

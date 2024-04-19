@@ -13,6 +13,7 @@ import {
 
 import previewImg from '@/assets/imgs/mr_freshjpg.jpg'
 import videoSrc from '@/assets/videos/Download.mp4'
+import { debounce } from '@/utils/debounce'
 
 const mockHashtags = [
   {
@@ -58,7 +59,6 @@ const actionItems = [
 export function Video() {
   const videoRef = useRef<HTMLVideoElement>(document.createElement('video'))
   const [isPlaying, setIsPlaying] = useState(false)
-  const [isInView, setIsInView] = useState(false)
 
   const handlePlay = () => {
     if (videoRef) videoRef.current.play()
@@ -71,20 +71,25 @@ export function Video() {
   }
 
   useEffect(() => {
-    const observer = new IntersectionObserver(([entry]) => {
-      setIsInView(entry.isIntersecting)
-    })
+    const onUserScroll = () => {
+      const rect = videoRef.current.getBoundingClientRect()
+      const { top, bottom } = rect
 
-    observer.observe(videoRef.current)
+      if (
+        top - 60 < window.innerHeight / 2 - 60 &&
+        bottom > window.innerHeight / 3 + 60
+      ) {
+        handlePlay()
+      } else {
+        handlePause()
+      }
+    }
 
-    return () => observer.disconnect()
-  }, [isInView])
+    document.addEventListener('scroll', debounce(onUserScroll, 700))
 
-  useEffect(() => {
-    // if (isInView) handlePlay()
-    // else handlePause()
-  }, [isInView])
-  
+    return () => document.removeEventListener('scroll', onUserScroll)
+  }, [])
+
   return (
     <div
       className="relative flex h-[calc(100vh-60px)] max-w-[692px] gap-[12px] py-[20px]
@@ -176,7 +181,7 @@ export function Video() {
                   preload="auto"
                   playsInline
                   className="absolute inset-0 block h-full w-full object-contain"
-                  onMouseDown={handlePlay}
+                  onEnded={() => setIsPlaying(false)}
                 />
               </div>
 
