@@ -1,8 +1,7 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-export function debounce<Params extends any[]>(
-  func: (...args: Params) => any,
+export function debounce<Params extends unknown[]>(
+  func: (...args: Params) => void,
   delay: number,
-): (...args: Params) => any {
+): (...args: Params) => void {
   let timer: NodeJS.Timeout
   return (...args: Params) => {
     clearTimeout(timer)
