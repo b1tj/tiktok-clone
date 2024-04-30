@@ -2,9 +2,9 @@ import { Outlet } from 'react-router-dom'
 import { Header } from '@/layouts/Header/Header'
 import { Sidebar } from '@/layouts/Sidebar/Sidebar'
 import { useLoginModalContext } from '@/contexts/Consumers/useLoginModalContext'
-import { Snackbar } from '@/components/Snackbar'
+import { Snackbar } from '@/components/common/Snackbar'
 import { useSnackbarContext } from '@/contexts/Consumers/useSnackbarContext'
-import { LoaderIndicator } from '@/components/LoaderIndicator'
+import { LoaderIndicator } from '@/components/common/LoaderIndicator'
 import { useAuthContext } from '@/contexts/Consumers/useAuthContext'
 
 export function Layout() {

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import userImg from '@/assets/imgs/mr_freshjpg.jpg'
-import { Button } from '@/components/Button'
+import { Button } from '@/components/common/Button'
 import {
   Bookmark,
   Forward,
@@ -9,11 +9,14 @@ import {
   Music,
   Pause,
   Play,
+  Volume2,
+  VolumeX,
 } from 'lucide-react'
 
 import previewImg from '@/assets/imgs/mr_freshjpg.jpg'
 import videoSrc from '@/assets/videos/Download.mp4'
 import { debounce } from '@/utils/debounce'
+import { checkElementInView } from '@/utils/checkElementInView'
 
 const mockHashtags = [
   {
@@ -60,9 +63,21 @@ export function Video() {
   const videoRef = useRef<HTMLVideoElement>(document.createElement('video'))
   const [isPlaying, setIsPlaying] = useState(false)
 
+  // TODO: Move this to new file name VideoContext due to video components share the same state
+  const [isMuted, setIsMuted] = useState(false)
+  // const [volume, setVolume] = useState(undefined)
+
   const handlePlay = () => {
-    if (videoRef) videoRef.current.play()
-    setIsPlaying(true)
+    const vidPromise = videoRef.current.play()
+    if (vidPromise !== undefined) {
+      vidPromise
+        .then(() => {
+          setIsPlaying(true)
+        })
+        .catch(() => {
+          setIsPlaying(false)
+        })
+    }
   }
 
   const handlePause = () => {
@@ -70,15 +85,21 @@ export function Video() {
     setIsPlaying(false)
   }
 
+  const handleMute = () => {
+    if (videoRef) videoRef.current.muted = true
+    setIsMuted(true)
+  }
+
+  const handleUnmute = () => {
+    if (videoRef) videoRef.current.muted = false
+    setIsMuted(false)
+  }
+
   useEffect(() => {
     const onUserScroll = () => {
-      const rect = videoRef.current.getBoundingClientRect()
-      const { top, bottom } = rect
+      if (!videoRef) return
 
-      if (
-        top - 60 < window.innerHeight / 2 - 60 &&
-        bottom > window.innerHeight / 3 + 60
-      ) {
+      if (checkElementInView(videoRef.current)) {
         handlePlay()
       } else {
         handlePause()
@@ -162,53 +183,64 @@ export function Video() {
             className="relative aspect-[9/16] h-full cursor-pointer overflow-hidden
            rounded-lg bg-black bg-cover"
           >
-            {/* Canvas placeholder */}
-
             {/* Video Player Wrapper*/}
-            <div className="absolute inset-0 h-full">
+            <div className="relative h-full">
               {/* Preview Video Picture */}
-              <div className="h-full w-full">
+              <div className="relative h-full w-full">
                 <img
                   src={previewImg}
                   className="absolute inset-0 block h-full w-full max-w-full object-contain"
                 />
               </div>
 
-              <div className="h-full w-full overflow-hidden rounded-lg">
+              <div className="absolute inset-0 h-full w-full overflow-hidden rounded-lg">
                 <video
                   ref={videoRef}
                   src={videoSrc}
                   preload="auto"
                   playsInline
-                  className="absolute inset-0 block h-full w-full object-contain"
+                  className="h-full w-full object-contain"
                   onEnded={() => setIsPlaying(false)}
                 />
               </div>
 
               {/* Video Controls */}
-              <div className="absolute bottom-[32px] flex w-full px-[12px]">
-                <div
-                  className="p-[10px]"
-                  onClick={isPlaying ? () => handlePause() : () => handlePlay()}
-                >
+              <div className="absolute bottom-[32px] flex w-full justify-between px-[12px]">
+                <div className=" p-[10px]">
                   {isPlaying ? (
                     <Pause
                       color="white"
                       className="fill-white"
                       size={20}
-                      onClick={handlePlay}
+                      onClick={handlePause}
                     />
                   ) : (
                     <Play
                       color="white"
                       className="fill-white"
                       size={20}
-                      onClick={handlePause}
+                      onClick={handlePlay}
                     />
                   )}
                 </div>
                 <div></div>
-                <div></div>
+                <div className="p-[10px]">
+                  {isMuted ? (
+                    <VolumeX
+                      color="white"
+                      className="fill-white"
+                      size={20}
+                      onClick={handleUnmute}
+                    />
+                  ) : (
+                    <Volume2
+                      color="white"
+                      className="fill-white"
+                      size={20}
+                      onClick={handleMute}
+                    />
+                  )}
+                </div>
               </div>
             </div>
           </div>

@@ -1,6 +1,6 @@
 import campaignBg from '@/assets/imgs/campaign-background.png'
 import fallbackImage from '@/assets/imgs/no-image.png'
-import { Button } from '@/components/Button'
+import { Button } from '@/components/common/Button'
 import { LoginModal } from '@/components/LoginModal'
 import { config } from '@/config'
 import { useAuthContext } from '@/contexts/Consumers/useAuthContext'
@@ -8,7 +8,7 @@ import { useLoginModalContext } from '@/contexts/Consumers/useLoginModalContext'
 import { useLoggedInState } from '@/hooks/useLoggedInState'
 import { navItemConstants } from '@/shared/constants/items'
 import Tippy, { TippyProps } from '@tippyjs/react'
-import { NavLink, useLocation } from 'react-router-dom'
+import { Link, useBlocker, useLocation } from 'react-router-dom'
 
 const { HOME, EXPLORE, FOLLOWING, FRIENDS, LIVE, PROFILE } = navItemConstants
 
@@ -29,8 +29,18 @@ export function Sidebar() {
   const { isShow, open, close } = useLoginModalContext()
   const { user, loading } = useAuthContext()
   const isUserLoggedIn = useLoggedInState()
+  const blocker = useBlocker(
+    ({ currentLocation, nextLocation }) =>
+      !user && currentLocation.pathname !== nextLocation.pathname,
+  )
 
   const location = useLocation()
+
+  const handleOnClick = ({ requireLogin }: { requireLogin: boolean }) => {
+    if (!user && requireLogin) {
+      open()
+    }
+  }
 
   return (
     <>
@@ -58,8 +68,16 @@ export function Sidebar() {
 
                 return (
                   <li key={navItem.id} className={navLinkCssClasses}>
-                    <NavLink
-                      to={navItem.path}
+                    <Link
+                      to={
+                        !navItem.requireLogin || user
+                          ? (() => {
+                              if (blocker.proceed) blocker.proceed()
+                              return navItem.path
+                            })()
+                          : '#'
+                      }
+                      onClick={() => handleOnClick(navItem)}
                       className="flex-start flex items-center gap-[8px]"
                     >
                       {!(navItem.id === PROFILE.id && isUserLoggedIn) ? (
@@ -74,7 +92,7 @@ export function Sidebar() {
                         </div>
                       )}
                       <span className="tracking-wide">{navItem.name}</span>
-                    </NavLink>
+                    </Link>
                   </li>
                 )
               })}
@@ -199,7 +217,7 @@ function SmallSideBar() {
                   {...tippyConfig}
                 >
                   <li key={navItem.id} className={navLinkCssClasses}>
-                    <NavLink
+                    <Link
                       to={navItem.path}
                       className="flex-start flex items-center justify-center gap-[8px]"
                     >
@@ -214,7 +232,7 @@ function SmallSideBar() {
                           />
                         </div>
                       )}
-                    </NavLink>
+                    </Link>
                   </li>
                 </Tippy>
               )

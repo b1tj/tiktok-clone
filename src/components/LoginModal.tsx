@@ -1,5 +1,5 @@
 import { SignInOption } from '@/components/Auth/SignInOption'
-import { Button } from '@/components/Button'
+import { Button } from '@/components/common/Button'
 import { useAuthContext } from '@/contexts/Consumers/useAuthContext'
 import { X } from 'lucide-react'
 import { useEffect, useState } from 'react'

@@ -3,7 +3,7 @@ import {
   SignInOption,
   SignUpNavigation,
 } from '@/components/Auth/SignInOption'
-import { Snackbar } from '@/components/Snackbar'
+import { Snackbar } from '@/components/common/Snackbar'
 import { useSnackbarContext } from '@/contexts/Consumers/useSnackbarContext'
 import { useLoggedInState } from '@/hooks/useLoggedInState'
 import { useSelectState } from '@/hooks/useSelectState'

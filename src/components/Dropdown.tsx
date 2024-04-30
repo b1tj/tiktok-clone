@@ -1,4 +1,4 @@
-import { Button } from '@/components/Button'
+import { Button } from '@/components/common/Button'
 import { useAuthContext } from '@/contexts/Consumers/useAuthContext'
 import { useLoginModalContext } from '@/contexts/Consumers/useLoginModalContext'
 import { useLoggedInState } from '@/hooks/useLoggedInState'
@@ -71,6 +71,7 @@ export function Dropdown({ children }: DropdownProps) {
   const [selected, setSelected] = useState<number>(-1)
   const [isLogoutPopupShow, setIsLogoutPopupShow] = useState(false)
   const isUserLoggedIn = useLoggedInState()
+  const navigate = useNavigate()
   const items = isUserLoggedIn ? loggedInItems : guestItems
 
   const handleLogoutModalClose = () => {
@@ -85,6 +86,12 @@ export function Dropdown({ children }: DropdownProps) {
 
     if (item.id === 'logout') {
       return !isLogoutPopupShow && setIsLogoutPopupShow(true)
+    }
+    if (item.id === 'view_profile') {
+      navigate('/profile')
+    }
+    if (item.id === 'favorites') {
+      navigate('profile')
     }
   }
 

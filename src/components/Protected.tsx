@@ -1,6 +1,7 @@
 import { useAuthContext } from '@/contexts/Consumers/useAuthContext'
-import { ReactNode } from 'react'
-import { Navigate } from 'react-router-dom'
+import { useLoginModalContext } from '@/contexts/Consumers/useLoginModalContext'
+import { ReactNode, useEffect, useRef } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 type ProtectedProps = {
   children: ReactNode
@@ -8,10 +9,15 @@ type ProtectedProps = {
 
 export function Protected({ children }: ProtectedProps) {
   const { user } = useAuthContext()
+  const openRef = useRef(useLoginModalContext().open)
+  const navigate = useNavigate()
 
-  if (!user) {
-    return <Navigate to="/" />
-  }
+  useEffect(() => {
+    if (!user) {
+      navigate('/')
+      openRef.current()
+    }
+  }, [user, navigate])
 
   return children
 }

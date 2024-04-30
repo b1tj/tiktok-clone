@@ -37,26 +37,32 @@ export const navItemConstants = Object.freeze({
   HOME: {
     ...HOME,
     Icon: Home,
+    requireLogin: false,
   },
   FOLLOWING: {
     ...FOLLOWING,
     Icon: UserRoundPlus,
+    requireLogin: false,
   },
   FRIENDS: {
     ...FRIENDS,
     Icon: Users,
+    requireLogin: true,
   },
   EXPLORE: {
     ...EXPLORE,
     Icon: Compass,
+    requireLogin: false,
   },
   LIVE: {
     ...LIVE,
     Icon: Video,
+    requireLogin: false,
   },
   PROFILE: {
     ...PROFILE,
     Icon: UserRound,
+    requireLogin: true,
   },
 })
 
@@ -117,6 +123,7 @@ export const dropDownItemConstants = Object.freeze({
     id: 'view_profile',
     label: 'View Profile',
     Icon: UserRound,
+    to: 'profile',
   },
   FAVORITES: {
     id: 'favorites',
@@ -177,5 +184,24 @@ export const dropDownItemConstants = Object.freeze({
     id: 'settings',
     label: 'Settings',
     Icon: Settings,
+  },
+})
+
+/**
+ * The user profile tab items
+ */
+
+export const userProfileTabItems = Object.freeze({
+  VIDEOS: {
+    label: 'videos',
+  },
+  FAVORITES: {
+    label: 'favorites',
+  },
+  REPOST: {
+    label: 'repost',
+  },
+  LIKED: {
+    label: 'liked',
   },
 })

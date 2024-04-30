@@ -1,6 +1,6 @@
 import fallbackImage from '@/assets/imgs/no-image.png'
 import logo from '@/assets/imgs/tiktok-logo.png'
-import { Button } from '@/components/Button'
+import { Button } from '@/components/common/Button'
 import { Dropdown } from '@/components/Dropdown'
 import { SearchResult } from '@/components/SearchResult'
 import { config } from '@/config'
