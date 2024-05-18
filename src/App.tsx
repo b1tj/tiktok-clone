@@ -1,66 +1,131 @@
+import { lazy, Suspense } from 'react'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
-import { ErrorPage } from '@/pages/ErrorPage.tsx'
-import { FollowingPage } from '@/pages/FollowingPage.tsx'
-import { FriendsPage } from '@/pages/FriendsPage.tsx'
-import { ExplorePage } from '@/pages/ExplorePage.tsx'
-import { LivePage } from '@/pages/LivePage.tsx'
-import { ProfilePage } from '@/pages/ProfilePage.tsx'
-import { HomePage } from '@/pages/HomePage.tsx'
-import { Layout } from '@/layouts/Layout.tsx'
-
 import { useLoginModalContext } from '@/contexts/Consumers/useLoginModalContext'
+import { LoaderIndicator } from '@/components/common/LoaderIndicator'
 
-import { SignUpPage } from '@/pages/SignUpPage'
-import { SignInPage } from '@/pages/SignInPage'
+const Layout = lazy(() =>
+  import('@/layouts/Layout').then(({ Layout }) => ({ default: Layout })),
+)
+
+const HomePage = lazy(() =>
+  import('@/pages/HomePage').then(({ HomePage }) => ({ default: HomePage })),
+)
+
+const FriendsPage = lazy(() =>
+  import('@/pages/FriendsPage').then(({ FriendsPage }) => ({
+    default: FriendsPage,
+  })),
+)
+
+const ExplorePage = lazy(() =>
+  import('@/pages/ExplorePage').then(({ ExplorePage }) => ({
+    default: ExplorePage,
+  })),
+)
+
+const LivePage = lazy(() =>
+  import('@/pages/LivePage').then(({ LivePage }) => ({ default: LivePage })),
+)
+
+const ErrorPage = lazy(() =>
+  import('@/pages/ErrorPage').then(({ ErrorPage }) => ({ default: ErrorPage })),
+)
+
+const FollowingPage = lazy(() =>
+  import('@/pages/FollowingPage').then(({ FollowingPage }) => ({
+    default: FollowingPage,
+  })),
+)
+
+const ProfilePage = lazy(() =>
+  import('@/pages/ProfilePage').then(({ ProfilePage }) => ({
+    default: ProfilePage,
+  })),
+)
+
+const SignUpPage = lazy(() =>
+  import('@/pages/SignUpPage').then(({ SignUpPage }) => ({
+    default: SignUpPage,
+  })),
+)
+const SignInPage = lazy(() =>
+  import('@/pages/SignInPage').then(({ SignInPage }) => ({
+    default: SignInPage,
+  })),
+)
 
 const router = createBrowserRouter([
   {
     element: <Layout />,
     errorElement: <ErrorPage />,
     children: [
-      {
-        path: '/',
-        element: <HomePage />,
-      },
-      {
-        path: '/en',
-        element: <HomePage />,
-      },
-      {
-        path: '/foryou',
-        element: <HomePage />,
-      },
+      ...['/', '/en', '/foryou'].map((path) => ({
+        path,
+        element: (
+          <Suspense fallback={<LoaderIndicator />}>
+            <HomePage />
+          </Suspense>
+        ),
+      })),
       {
         path: '/following',
-        element: <FollowingPage />,
+        element: (
+          <Suspense fallback={<LoaderIndicator />}>
+            <FollowingPage />
+          </Suspense>
+        ),
       },
       {
         path: '/friends',
-        element: <FriendsPage />,
+        element: (
+          <Suspense fallback={<LoaderIndicator />}>
+            <FriendsPage />
+          </Suspense>
+        ),
       },
       {
         path: '/explore',
-        element: <ExplorePage />,
+        element: (
+          <Suspense fallback={<LoaderIndicator />}>
+            <ExplorePage />
+          </Suspense>
+        ),
       },
       {
         path: '/live',
-        element: <LivePage />,
+        element: (
+          <Suspense fallback={<LoaderIndicator />}>
+            <LivePage />
+          </Suspense>
+        ),
       },
       {
         path: '/profile',
-        element: <ProfilePage />,
+        element: (
+          <Suspense fallback={<LoaderIndicator />}>
+            <ProfilePage />
+          </Suspense>
+        ),
       },
     ],
   },
 
   {
     path: '/signup',
-    element: <SignUpPage />,
+    element: (
+      <Suspense fallback={<LoaderIndicator />}>
+        <SignUpPage />
+      </Suspense>
+    ),
   },
   {
     path: '/login',
-    element: <SignInPage />,
+    element: (
+      <Suspense fallback={<LoaderIndicator />}>
+        <SignInPage />
+      </Suspense>
+    ),
   },
 ])
 
