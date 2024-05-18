@@ -1,6 +1,5 @@
 import { Button } from '@/components/common/Button'
 import { useAuthContext } from '@/contexts/Consumers/useAuthContext'
-import { useLoginModalContext } from '@/contexts/Consumers/useLoginModalContext'
 import { useLoggedInState } from '@/hooks/useLoggedInState'
 import { dropDownItemConstants } from '@/shared/constants/items'
 import Tippy, { TippyProps } from '@tippyjs/react'
@@ -185,7 +184,6 @@ type LogoutPopupProps = {
 
 function LogoutPopup({ close, isShow }: LogoutPopupProps) {
   const [render, setRender] = useState(isShow)
-  const { close: closeLoginModal } = useLoginModalContext()
   const { signOutUser } = useAuthContext()
   const navigate = useNavigate()
 
@@ -196,11 +194,7 @@ function LogoutPopup({ close, isShow }: LogoutPopupProps) {
   const handleLogout = () => {
     try {
       signOutUser()
-      close()
-      closeLoginModal()
-      setTimeout(() => {
-        navigate(0)
-      }, 1000000)
+      navigate(0)
     } catch (error) {
       console.log(error)
     }

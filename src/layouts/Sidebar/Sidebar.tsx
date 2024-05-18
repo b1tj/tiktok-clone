@@ -168,16 +168,24 @@ export function Sidebar() {
       </aside>
 
       {/* Small Sidebar */}
-      <SmallSideBar />
+      <SmallSideBar handleOnClick={handleOnClick} />
 
       <LoginModal isShow={isShow} close={close} />
     </>
   )
 }
 
-function SmallSideBar() {
+type SmallSideBarProps = {
+  handleOnClick: ({ requireLogin }: { requireLogin: boolean }) => void
+}
+
+function SmallSideBar({ handleOnClick }: SmallSideBarProps) {
   const { user } = useAuthContext()
   const isUserLoggedIn = useLoggedInState()
+  const blocker = useBlocker(
+    ({ currentLocation, nextLocation }) =>
+      !user && currentLocation.pathname !== nextLocation.pathname,
+  )
 
   return (
     <aside
@@ -218,8 +226,16 @@ function SmallSideBar() {
                 >
                   <li key={navItem.id} className={navLinkCssClasses}>
                     <Link
-                      to={navItem.path}
+                      to={
+                        !navItem.requireLogin || user
+                          ? (() => {
+                              if (blocker.proceed) blocker.proceed()
+                              return navItem.path
+                            })()
+                          : '#'
+                      }
                       className="flex-start flex items-center justify-center gap-[8px]"
+                      onClick={() => handleOnClick(navItem)}
                     >
                       {!(navItem.id === PROFILE.id && isUserLoggedIn) ? (
                         <navItem.Icon size={32} className="p-[4px]" />
