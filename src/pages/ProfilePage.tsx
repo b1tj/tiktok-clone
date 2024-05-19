@@ -3,28 +3,23 @@ import { Navigate } from 'react-router-dom'
 import { Button } from '@/components/common/Button'
 import { useAuthContext } from '@/contexts/Consumers/useAuthContext'
 import { userProfileTabItems } from '@/shared/constants/items'
-import { FilePenLine, Forward, Play } from 'lucide-react'
+import { FilePenLine, Forward } from 'lucide-react'
 import { useLoggedInState } from '@/hooks/useLoggedInState'
 import axios from 'axios'
+import { Player } from '@/components/Player'
+
+import { PlayerType } from '@/shared/types/types'
 
 const { VIDEOS, FAVORITES, LIKED } = userProfileTabItems
 
 const tabItems = [VIDEOS, FAVORITES, LIKED]
-
-type ResponeItemType = {
-  albumId: number
-  id: number
-  title: string
-  url: string
-  thumbnailUrl: string
-}
 
 export const ProfilePage = () => {
   const [currentTab, setCurrentTab] = useState(tabItems.indexOf(VIDEOS))
   const [tabUnderlineWidth, setTabUnderlineWidth] = useState(0)
   const [tabUnderlineLeft, setTabUnderlineLeft] = useState(0)
   const [hoveringTab, setHoveringTab] = useState(-1)
-  const [data, setData] = useState<ResponeItemType[]>([])
+  const [data, setData] = useState<PlayerType[]>([])
   const { user } = useAuthContext()
 
   const isUserLoggedIn = useLoggedInState()
@@ -54,7 +49,9 @@ export const ProfilePage = () => {
   useEffect(() => {
     const fetchData = () => {
       axios
-        .get('https://jsonplaceholder.typicode.com/albums/1/photos')
+        .get<PlayerType[]>(
+          'https://jsonplaceholder.typicode.com/albums/1/photos',
+        )
         .then((res) => setData(res.data))
         .catch((error) => console.log(error))
     }
@@ -133,21 +130,7 @@ export const ProfilePage = () => {
         </section>
         <section className="grid grid-cols-[repeat(auto-fill,minmax(184px,1fr))] gap-x-4 gap-y-6">
           {data.map((item) => (
-            <div
-              key={item.id}
-              className="relative w-full overflow-hidden rounded-md"
-            >
-              <div className="aspect-[1/1.32]">
-                <img src={item.url} alt="" className="size-full object-cover" />
-                <div
-                  className="absolute bottom-0 flex h-24 w-full 
-                  items-center space-x-1 bg-gradient-to-b from-[rgba(22,24,35,0)] from-5% to-[rgba(22,24,35,0.5)] to-95% p-[67px_13px_17px]"
-                >
-                  <Play color="white" size={18} />
-                  <span className="text-base font-medium text-white">9.2M</span>
-                </div>
-              </div>
-            </div>
+            <Player key={item.id} item={item} />
           ))}
         </section>
       </div>

@@ -6,6 +6,7 @@ import { Snackbar } from '@/components/common/Snackbar'
 import { useSnackbarContext } from '@/contexts/Consumers/useSnackbarContext'
 import { LoaderIndicator } from '@/components/common/LoaderIndicator'
 import { useAuthContext } from '@/contexts/Consumers/useAuthContext'
+import { Suspense } from 'react'
 
 export function Layout() {
   const { isShow } = useLoginModalContext()
@@ -19,7 +20,9 @@ export function Layout() {
         <div className="flex">
           <Sidebar />
           <main className="mt-[60px] flex flex-1 flex-col items-center max-[767px]:ml-[16px]">
-            <Outlet />
+            <Suspense fallback={<LoaderIndicator />}>
+              <Outlet />
+            </Suspense>
           </main>
         </div>
       </div>

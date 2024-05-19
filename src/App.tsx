@@ -1,8 +1,7 @@
-import { lazy, Suspense } from 'react'
+import { lazy } from 'react'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 import { useLoginModalContext } from '@/contexts/Consumers/useLoginModalContext'
-import { LoaderIndicator } from '@/components/common/LoaderIndicator'
 
 const Layout = lazy(() =>
   import('@/layouts/Layout').then(({ Layout }) => ({ default: Layout })),
@@ -62,70 +61,38 @@ const router = createBrowserRouter([
     children: [
       ...['/', '/en', '/foryou'].map((path) => ({
         path,
-        element: (
-          <Suspense fallback={<LoaderIndicator />}>
-            <HomePage />
-          </Suspense>
-        ),
+        element: <HomePage />,
       })),
       {
         path: '/following',
-        element: (
-          <Suspense fallback={<LoaderIndicator />}>
-            <FollowingPage />
-          </Suspense>
-        ),
+        element: <FollowingPage />,
       },
       {
         path: '/friends',
-        element: (
-          <Suspense fallback={<LoaderIndicator />}>
-            <FriendsPage />
-          </Suspense>
-        ),
+        element: <FriendsPage />,
       },
       {
         path: '/explore',
-        element: (
-          <Suspense fallback={<LoaderIndicator />}>
-            <ExplorePage />
-          </Suspense>
-        ),
+        element: <ExplorePage />,
       },
       {
         path: '/live',
-        element: (
-          <Suspense fallback={<LoaderIndicator />}>
-            <LivePage />
-          </Suspense>
-        ),
+        element: <LivePage />,
       },
       {
         path: '/profile',
-        element: (
-          <Suspense fallback={<LoaderIndicator />}>
-            <ProfilePage />
-          </Suspense>
-        ),
+        element: <ProfilePage />,
       },
     ],
   },
 
   {
     path: '/signup',
-    element: (
-      <Suspense fallback={<LoaderIndicator />}>
-        <SignUpPage />
-      </Suspense>
-    ),
+    element: <SignUpPage />,
   },
   {
     path: '/login',
-    element: (
-      <Suspense fallback={<LoaderIndicator />}>
-        <SignInPage />
-      </Suspense>
-    ),
+    element: <SignInPage />,
   },
 ])
 

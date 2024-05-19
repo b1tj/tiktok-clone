@@ -106,9 +106,11 @@ export function Video() {
       }
     }
 
-    document.addEventListener('scroll', debounce(onUserScroll, 700))
+    const debouncedFunc = debounce(onUserScroll, 700)
 
-    return () => document.removeEventListener('scroll', onUserScroll)
+    document.addEventListener('scroll', debouncedFunc)
+
+    return () => document.removeEventListener('scroll', debouncedFunc)
   }, [])
 
   return (

@@ -45,7 +45,7 @@ export function Sidebar() {
   return (
     <>
       {/* Big Sidebar */}
-      <aside className="hidden w-[240px] flex-col pb-[26px] pl-[8px] pr-[8px] pt-[20px] min-[1072px]:flex">
+      <aside className="hidden h-screen min-h-full w-[240px] min-w-[240px] flex-col pb-[26px] pl-[8px] pr-[8px] pt-[20px] min-[1072px]:flex">
         <div className="fixed top-[80px] w-[240px] pr-[22px]">
           <nav className="mb-[8px]">
             <ul>

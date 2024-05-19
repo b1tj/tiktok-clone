@@ -205,3 +205,29 @@ export const userProfileTabItems = Object.freeze({
     label: 'liked',
   },
 })
+
+/**
+ * Explore tags
+ */
+export const exploreTags = Object.freeze([
+  'Singing & Dancing',
+  'Comedy',
+  'Sports',
+  'Anime & Comics',
+  'Relationship',
+  'Shows',
+  'Lipsync',
+  'Daily Life',
+  'Beauty Care',
+  'Games',
+  'Society',
+  'Outfit',
+  'Cars',
+  'Food',
+  'Animals',
+  'Family',
+  'Drama',
+  'Fitness & Health',
+  'Education',
+  'Technology',
+])

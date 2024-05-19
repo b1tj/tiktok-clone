@@ -101,9 +101,9 @@ export function Header() {
               {isUserLoggedIn ? (
                 <div className="ml-[12px] flex items-center gap-6">
                   <Tippy
-                    className="overflow-hidden rounded-lg text-[16px] leading-[21px] text-white"
+                    className="focus:ring-none overflow-hidden rounded-lg border-none text-[16px] leading-[21px] text-white focus:outline-transparent"
                     content={
-                      <div className="p-1 text-[16px] font-semibold leading-[21px] text-white">
+                      <div className="!border-none p-1 text-[16px] font-semibold leading-[21px] text-white !outline-none focus:!ring-0 focus:!ring-red-700">
                         Message
                       </div>
                     }
@@ -112,9 +112,9 @@ export function Header() {
                     <Send />
                   </Tippy>
                   <Tippy
-                    className="overflow-hidden rounded-lg p-0 text-[16px] leading-[21px] text-white "
+                    className="focus:ring-none overflow-hidden rounded-lg border-none p-0 text-[16px] leading-[21px] text-white focus:outline-transparent "
                     content={
-                      <div className="p-1 text-[16px] font-semibold leading-[21px] text-white">
+                      <div className="!border-none p-1 text-[16px] font-semibold leading-[21px] text-white !outline-none focus:!ring-0 focus:!ring-red-700">
                         Inbox
                       </div>
                     }
