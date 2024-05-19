@@ -3,7 +3,7 @@ import { Player } from '@/components/Player'
 import { exploreTags } from '@/shared/constants/items'
 import { PlayerType } from '@/shared/types/types'
 import axios from 'axios'
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 const tags = [...exploreTags]
 
@@ -28,20 +28,20 @@ function TagList({ tags }: TaglistProps) {
   const [direction, setDirection] = useState<'up' | 'down'>('up')
   const scrollRef = useRef(window.scrollY)
 
-  useEffect(() => {
-    const checkDirection = () => {
-      if (window.scrollY > scrollRef.current) {
-        setDirection('down')
-      } else {
-        setDirection('up')
-      }
-      scrollRef.current = window.scrollY
+  const checkDirection = useCallback(() => {
+    if (window.scrollY > scrollRef.current) {
+      setDirection('down')
+    } else {
+      setDirection('up')
     }
+    scrollRef.current = window.scrollY
+  }, [])
 
+  useEffect(() => {
     window.addEventListener('scroll', checkDirection)
 
     return () => window.removeEventListener('scroll', checkDirection)
-  }, [])
+  }, [checkDirection])
 
   return (
     <div

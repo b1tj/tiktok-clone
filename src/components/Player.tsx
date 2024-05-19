@@ -12,7 +12,11 @@ type PlayerType = {
   }
 } & React.HTMLAttributes<HTMLDivElement>
 
-export function Player({ item, className, ...props }: PlayerType) {
+export const Player = React.memo(function Player({
+  item,
+  className,
+  ...props
+}: PlayerType) {
   return (
     <div
       {...props}
@@ -33,4 +37,4 @@ export function Player({ item, className, ...props }: PlayerType) {
       </div>
     </div>
   )
-}
+})
