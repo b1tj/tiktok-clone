@@ -1,6 +1,6 @@
 import { useAuthContext } from '@/contexts/Consumers/useAuthContext'
 import { useSnackbarContext } from '@/contexts/Consumers/useSnackbarContext'
-import { auth } from '@/firebase/firebase-config'
+import { auth } from '@/services/firebase/firebase-config'
 import { loginMethodConstants } from '@/shared/constants/items'
 import { routeConstants } from '@/shared/constants/routes'
 import { checkAuthPage } from '@/utils/checkAuthPage'

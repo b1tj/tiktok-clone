@@ -1,4 +1,4 @@
-import { auth } from '@/firebase/firebase-config'
+import { auth } from '@/services/firebase/firebase-config'
 import {
   User as FirebaseUser,
   GoogleAuthProvider,

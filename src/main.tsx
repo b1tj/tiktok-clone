@@ -6,7 +6,7 @@ import '@/index.css'
 import { StyledEngineProvider } from '@mui/material'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import { store } from '@/store/store'
+import { store } from '@/services/store/store'
 import { Provider } from 'react-redux'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
