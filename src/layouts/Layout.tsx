@@ -1,15 +1,16 @@
 import { Outlet } from 'react-router-dom'
 import { Header } from '@/layouts/Header/Header'
 import { Sidebar } from '@/layouts/Sidebar/Sidebar'
-import { useLoginModalContext } from '@/contexts/Consumers/useLoginModalContext'
 import { Snackbar } from '@/components/common/Snackbar'
 import { useSnackbarContext } from '@/contexts/Consumers/useSnackbarContext'
 import { LoaderIndicator } from '@/components/common/LoaderIndicator'
 import { useAuthContext } from '@/contexts/Consumers/useAuthContext'
 import { Suspense } from 'react'
+import { useAppSelector } from '@/hooks/reduxHooks'
+import { LoginModal } from '@/components/LoginModal'
 
 export function Layout() {
-  const { isShow } = useLoginModalContext()
+  const isShow = useAppSelector((s) => s.modal.isShow)
   const { closeSnackbar, isShow: isSnackbarShow } = useSnackbarContext()
   const { loading } = useAuthContext()
 
@@ -29,6 +30,7 @@ export function Layout() {
 
       {isSnackbarShow && <Snackbar onAnimationEnd={closeSnackbar} />}
       {loading && <LoaderIndicator />}
+      <LoginModal />
     </>
   )
 }

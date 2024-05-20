@@ -1,7 +1,7 @@
 import { lazy } from 'react'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
-import { useLoginModalContext } from '@/contexts/Consumers/useLoginModalContext'
+import { useAppSelector } from '@/hooks/reduxHooks'
 
 const Layout = lazy(() =>
   import('@/layouts/Layout').then(({ Layout }) => ({ default: Layout })),
@@ -98,7 +98,7 @@ const router = createBrowserRouter([
 
 export function App() {
   // Checking if current modal popup and prevent background scrolling
-  const { isShow } = useLoginModalContext()
+  const isShow = useAppSelector((s) => s.modal.isShow)
 
   return (
     <>

@@ -5,8 +5,9 @@ import { Dropdown } from '@/components/Dropdown'
 import { SearchResult } from '@/components/SearchResult'
 import { config } from '@/config'
 import { useAuthContext } from '@/contexts/Consumers/useAuthContext'
-import { useLoginModalContext } from '@/contexts/Consumers/useLoginModalContext'
+import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks'
 import { useLoggedInState } from '@/hooks/useLoggedInState'
+import { open } from '@/services/store/modal/modalSlice'
 import { routeConstants } from '@/shared/constants/routes'
 import Tippy, { TippyProps } from '@tippyjs/react/'
 import {
@@ -29,7 +30,8 @@ const { LOGIN, SIGNUP } = routeConstants
 
 export function Header() {
   const [isShowResult, setIsShowResult] = useState(false)
-  const { isShow, open } = useLoginModalContext()
+  const dispatch = useAppDispatch()
+  const isShow = useAppSelector((s) => s.modal.isShow)
   const { user } = useAuthContext()
   const isUserLoggedIn = useLoggedInState()
   const location = useLocation()
@@ -93,7 +95,11 @@ export function Header() {
               </Button>
             </a>
             {!isUserLoggedIn && (
-              <Button intent="fill" className="min-w-[100px]" onClick={open}>
+              <Button
+                intent="fill"
+                className="min-w-[100px]"
+                onClick={() => dispatch(open())}
+              >
                 Log in
               </Button>
             )}

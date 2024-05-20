@@ -1,11 +1,11 @@
 import campaignBg from '@/assets/imgs/campaign-background.png'
 import fallbackImage from '@/assets/imgs/no-image.png'
 import { Button } from '@/components/common/Button'
-import { LoginModal } from '@/components/LoginModal'
 import { config } from '@/config'
 import { useAuthContext } from '@/contexts/Consumers/useAuthContext'
-import { useLoginModalContext } from '@/contexts/Consumers/useLoginModalContext'
+import { useAppDispatch } from '@/hooks/reduxHooks'
 import { useLoggedInState } from '@/hooks/useLoggedInState'
+import { open } from '@/services/store/modal/modalSlice'
 import { navItemConstants } from '@/shared/constants/items'
 import Tippy, { TippyProps } from '@tippyjs/react'
 import { Link, useBlocker, useLocation } from 'react-router-dom'
@@ -26,7 +26,7 @@ const tippyConfig: TippyProps = {
 }
 
 export function Sidebar() {
-  const { isShow, open, close } = useLoginModalContext()
+  const dispatch = useAppDispatch()
   const { user, loading } = useAuthContext()
   const isUserLoggedIn = useLoggedInState()
   const blocker = useBlocker(
@@ -38,7 +38,7 @@ export function Sidebar() {
 
   const handleOnClick = ({ requireLogin }: { requireLogin: boolean }) => {
     if (!user && requireLogin) {
-      open()
+      dispatch(open())
     }
   }
 
@@ -112,7 +112,7 @@ export function Sidebar() {
                   intent="primary"
                   size="medium"
                   className="mt-[20px] min-h-[48px] w-full rounded-[4px] py-[6px] text-center text-[18px] font-medium"
-                  onClick={open}
+                  onClick={() => dispatch(open())}
                 >
                   Log in
                 </Button>
@@ -169,8 +169,6 @@ export function Sidebar() {
 
       {/* Small Sidebar */}
       <SmallSideBar handleOnClick={handleOnClick} />
-
-      <LoginModal isShow={isShow} close={close} />
     </>
   )
 }

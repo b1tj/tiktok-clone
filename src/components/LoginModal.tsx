@@ -1,58 +1,15 @@
 import { SignInOption } from '@/components/Auth/SignInOption'
 import { Button } from '@/components/common/Button'
 import { useAuthContext } from '@/contexts/Consumers/useAuthContext'
+import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks'
+import { close } from '@/services/store/modal/modalSlice'
 import { X } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
-// const loginItems = [
-//   {
-//     id: 'qr_code',
-//     Icon: QrCode,
-//     title: 'Use QR code',
-//   },
-//   {
-//     id: 'phone_email_username',
-//     Icon: UserRound,
-//     title: 'Use phone / email / username',
-//   },
-//   {
-//     id: 'facebook',
-//     Icon: Facebook,
-//     title: 'Continue with Facebook',
-//   },
-//   {
-//     id: 'google',
-//     Icon: Google,
-//     title: 'Continue with Google',
-//   },
-//   {
-//     id: 'twitter',
-//     Icon: Twitter,
-//     title: 'Continue with Twitter',
-//   },
-//   {
-//     id: 'line',
-//     Icon: Line,
-//     title: 'Continue with LINE',
-//   },
-//   {
-//     id: 'kakaotalk',
-//     Icon: KakaoTalk,
-//     title: 'Continue with KakaoTalk',
-//   },
-//   {
-//     id: 'apple',
-//     Icon: Apple,
-//     title: 'Continue with Apple',
-//   },
-// ]
+export function LoginModal() {
+  const isShow = useAppSelector((s) => s.modal.isShow)
+  const dispatch = useAppDispatch()
 
-type LoginModalProps = {
-  isShow: boolean
-  close: () => void
-}
-
-export function LoginModal({ isShow, close }: LoginModalProps) {
   const [render, setRender] = useState(isShow)
   const { user } = useAuthContext()
 
@@ -80,7 +37,7 @@ export function LoginModal({ isShow, close }: LoginModalProps) {
           <Button
             intent="round"
             className="absolute right-[16px] top-[16px] h-[24px] w-[24px] scale-[1.7] bg-ghost p-0"
-            onClick={close}
+            onClick={() => dispatch(close())}
           >
             <X size={15} />
           </Button>
