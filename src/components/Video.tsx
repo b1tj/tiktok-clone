@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import userImg from '@/assets/imgs/mr_freshjpg.jpg'
 import { Button } from '@/components/common/Button'
 import {
@@ -15,8 +15,13 @@ import {
 
 import previewImg from '@/assets/imgs/mr_freshjpg.jpg'
 import videoSrc from '@/assets/videos/Download.mp4'
+
 import { debounce } from '@/utils/debounce'
 import { checkElementInView } from '@/utils/checkElementInView'
+import Lazyload from 'react-lazyload'
+import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks'
+import { mute, unmute, adjustVolume } from '@/services/store/video/videoSlice'
+import { Slider } from '@mui/material'
 
 const mockHashtags = [
   {
@@ -62,23 +67,25 @@ const actionItems = [
 export function Video() {
   const videoRef = useRef<HTMLVideoElement>(document.createElement('video'))
   const [isPlaying, setIsPlaying] = useState(false)
+  const videoState = useAppSelector((s) => s.video)
+  const videoDispatch = useAppDispatch()
 
   // TODO: Move this to new file name VideoContext due to video components share the same state
-  const [isMuted, setIsMuted] = useState(false)
   // const [volume, setVolume] = useState(undefined)
 
-  const handlePlay = () => {
+  const handlePlay = useCallback(() => {
     const vidPromise = videoRef.current.play()
     if (vidPromise !== undefined) {
       vidPromise
         .then(() => {
+          videoRef.current.volume = videoState.volume
           setIsPlaying(true)
         })
         .catch(() => {
           setIsPlaying(false)
         })
     }
-  }
+  }, [videoState.volume])
 
   const handlePause = () => {
     if (videoRef) videoRef.current.pause()
@@ -87,15 +94,20 @@ export function Video() {
 
   const handleMute = () => {
     if (videoRef) videoRef.current.muted = true
-    setIsMuted(true)
+    if (!videoState.isMuted) {
+      videoDispatch(mute())
+    }
   }
 
   const handleUnmute = () => {
     if (videoRef) videoRef.current.muted = false
-    setIsMuted(false)
+    if (videoState.isMuted) {
+      videoDispatch(unmute())
+    }
   }
 
   useEffect(() => {
+    videoRef.current.volume = videoState.volume
     const onUserScroll = () => {
       if (!videoRef) return
 
@@ -111,7 +123,7 @@ export function Video() {
     document.addEventListener('scroll', debouncedFunc)
 
     return () => document.removeEventListener('scroll', debouncedFunc)
-  }, [])
+  }, [handlePlay, videoState.volume])
 
   return (
     <div
@@ -189,12 +201,16 @@ export function Video() {
             <div className="relative h-full">
               {/* Preview Video Picture */}
               <div className="relative h-full w-full">
-                <img
-                  src={previewImg}
-                  className="absolute inset-0 block h-full w-full max-w-full object-contain"
-                />
+                <Lazyload height={300} throttle={500}>
+                  <img
+                    src={previewImg}
+                    className="absolute inset-0 block h-full w-full max-w-full object-contain"
+                    alt=""
+                  />
+                </Lazyload>
               </div>
 
+              {/* Video Player */}
               <div className="absolute inset-0 h-full w-full overflow-hidden rounded-lg">
                 <video
                   ref={videoRef}
@@ -207,7 +223,7 @@ export function Video() {
               </div>
 
               {/* Video Controls */}
-              <div className="absolute bottom-[32px] flex w-full justify-between px-[12px]">
+              <div className="absolute bottom-[32px] flex w-full items-end justify-between px-[12px]">
                 <div className=" p-[10px]">
                   {isPlaying ? (
                     <Pause
@@ -225,9 +241,9 @@ export function Video() {
                     />
                   )}
                 </div>
-                <div></div>
-                <div className="p-[10px]">
-                  {isMuted ? (
+                <div className="group flex flex-col items-center p-[10px]">
+                  <VolumeSlider />
+                  {videoState.isMuted || videoState.volume === 0 ? (
                     <VolumeX
                       color="white"
                       className="fill-white"
@@ -269,5 +285,51 @@ export function Video() {
         </div>
       </div>
     </div>
+  )
+}
+
+function VolumeSlider() {
+  const dispatch = useAppDispatch()
+  const volume = useAppSelector((s) => s.video.volume)
+
+  const handleMouseUp = (value: number) => {
+    dispatch(adjustVolume(value))
+  }
+
+  const handleAdjustVolume = (volume: number) => {
+    dispatch(adjustVolume(volume))
+  }
+
+  return (
+    <Slider
+      value={volume}
+      min={0}
+      step={0.01}
+      max={1}
+      aria-label="player-volume-adjustment"
+      orientation="vertical"
+      className={
+        'bg-base-gray -mx-2 mb-1 hidden h-16 bg-opacity-50 group-focus-within:block group-hover:block'
+      }
+      onChange={(_, value) => handleAdjustVolume(value as number)}
+      onChangeCommitted={(_, value) => handleMouseUp(value as number)}
+      sx={{
+        color: 'white',
+        height: 58,
+        width: 2,
+        '& .MuiSlider-thumb': {
+          height: 12,
+          width: 12,
+          backgroundColor: 'white',
+          '&:active, &:hover': {
+            boxShadow: 'none',
+          },
+          '&:after': {
+            height: 12,
+            width: 12,
+          },
+        },
+      }}
+    />
   )
 }
