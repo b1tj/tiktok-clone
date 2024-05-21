@@ -3,6 +3,7 @@ import { Button } from '@/components/common/Button'
 import { Skeleton } from '@mui/material'
 import axios from 'axios'
 import { lazy, useEffect, useState } from 'react'
+import LazyLoad from 'react-lazyload'
 
 const VerifiedTick = lazy(() =>
   import('@/components/common/VerifiedTick').then(({ VerifiedTick }) => ({
@@ -80,7 +81,9 @@ function UserCard({ userId, userName, avatarSrc = '' }: UserCardType) {
         className="block h-full w-full bg-input"
       >
         <div className="absolute bottom-0 flex w-full flex-col items-center justify-center gap-1 px-3 py-5 text-white">
-          <Avatar src={avatarSrc} size={48} />
+          <LazyLoad>
+            <Avatar src={avatarSrc} size={48} />
+          </LazyLoad>
           <h3 className="text-lg font-bold">{userName}</h3>
           <div className="flex items-center gap-1">
             <h4 className="text-sm font-semibold">{userId}</h4>

@@ -1,5 +1,6 @@
 import { Play } from 'lucide-react'
 import React from 'react'
+import LazyLoad from 'react-lazyload'
 import { twMerge } from 'tailwind-merge'
 
 type PlayerType = {
@@ -26,7 +27,9 @@ export const Player = React.memo(function Player({
       )}
     >
       <div className="aspect-[1/1.32]">
-        <img src={item.url} alt="" className="size-full object-cover" />
+        <LazyLoad className="size-full">
+          <img src={item.url} alt="" className="size-full object-cover" />
+        </LazyLoad>
         <div
           className="absolute bottom-0 flex h-24 w-full 
       items-center space-x-1 bg-gradient-to-b from-[rgba(22,24,35,0)] from-5% to-[rgba(22,24,35,0.5)] to-95% p-[67px_13px_17px]"

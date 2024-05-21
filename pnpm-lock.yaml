@@ -23,6 +23,9 @@ importers:
       '@tippyjs/react':
         specifier: ^4.2.6
         version: 4.2.6(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@types/react-lazyload':
+        specifier: ^3.2.3
+        version: 3.2.3
       axios:
         specifier: ^1.6.8
         version: 1.6.8
@@ -41,6 +44,9 @@ importers:
       react-dom:
         specifier: ^18.2.0
         version: 18.2.0(react@18.2.0)
+      react-lazyload:
+        specifier: ^3.2.1
+        version: 3.2.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       react-redux:
         specifier: ^9.1.1
         version: 9.1.1(@types/react@18.2.65)(react@18.2.0)(redux@5.0.1)
@@ -916,6 +922,9 @@ packages:
   '@types/react-dom@18.2.22':
     resolution: {integrity: sha512-fHkBXPeNtfvri6gdsMYyW+dW7RXFo6Ad09nLFK0VQWR7yGLai/Cyvyj696gbwYvBnhGtevUG9cET0pmUbMtoPQ==}
 
+  '@types/react-lazyload@3.2.3':
+    resolution: {integrity: sha512-s03gWlHXiFqZr7TEFDTx8Lkl+ZEYrwTkXP9MNZ3Z3blzsPrnkYjgeSK2tjfzVv/TYVCnDk6TZwNRDHQlHy/1Ug==}
+
   '@types/react-transition-group@4.4.10':
     resolution: {integrity: sha512-hT/+s0VQs2ojCX823m60m5f0sL5idt9SO6Tj6Dg+rdphGPIeJbJ6CxvBYkgkGKrYeDjvIpKTR38UzmtHJOGW3Q==}
 
@@ -1786,6 +1795,12 @@ packages:
 
   react-is@18.2.0:
     resolution: {integrity: sha512-xWGDIW6x921xtzPkhiULtthJHoJvBbF3q26fzloPCK0hsvxtPVelvftw3zjbHWSkR2km9Z+4uxbDDK/6Zw9B8w==}
+
+  react-lazyload@3.2.1:
+    resolution: {integrity: sha512-oDLlLOI/rRLY0fUh/HYFCy4CqCe7zdJXv6oTl2pC30tN3ezWxvwcdHYfD/ZkrGOMOOT5pO7hNLSvg7WsmAij1w==}
+    peerDependencies:
+      react: ^0.14.0 || ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
+      react-dom: ^0.14.0 || ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
 
   react-redux@9.1.1:
     resolution: {integrity: sha512-5ynfGDzxxsoV73+4czQM56qF43vsmgJsO22rmAvU5tZT2z5Xow/A2uhhxwXuGTxgdReF3zcp7A80gma2onRs1A==}
@@ -2954,6 +2969,10 @@ snapshots:
     dependencies:
       '@types/react': 18.2.65
 
+  '@types/react-lazyload@3.2.3':
+    dependencies:
+      '@types/react': 18.2.65
+
   '@types/react-transition-group@4.4.10':
     dependencies:
       '@types/react': 18.2.65
@@ -3825,6 +3844,11 @@ snapshots:
   react-is@16.13.1: {}
 
   react-is@18.2.0: {}
+
+  react-lazyload@3.2.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0):
+    dependencies:
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
 
   react-redux@9.1.1(@types/react@18.2.65)(react@18.2.0)(redux@5.0.1):
     dependencies:

@@ -19,6 +19,7 @@ export default {
         hashtag: '#2b5db9',
         divider: '#16182333',
         'snack-bar': '#545454eb',
+        'base-gray': '#161823',
       },
       animation: {
         'fade-jump-in': 'fade-jump-in 3s ease-out forwards',

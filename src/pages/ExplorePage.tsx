@@ -8,24 +8,28 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 const tags = [...exploreTags]
 
 export const ExplorePage = () => {
+  const [activeTag, setActiveTag] = useState(0)
+
+  //TODO: Fetch data base on current tag content
+  useEffect(() => {}, [activeTag])
+
   return (
-    <div className="!-ml-4 min-h-[calc(100vh-60px)] w-full overflow-hidden px-12 pb-8 pt-24">
-      <TagList tags={tags} />
+    <div className="-ml-4 min-h-[calc(100vh-60px)] w-full overflow-hidden px-12 pb-8 pt-24">
+      <TagList setActiveTag={setActiveTag} tags={tags} activeTag={activeTag} />
       <VideoFeed />
     </div>
   )
 }
-
-type TagProps = {
-  content: string
-}
-
 type TaglistProps = {
   tags: string[]
+  activeTag: number
+  setActiveTag: (tagIndex: number) => void
 }
 
-function TagList({ tags }: TaglistProps) {
-  const [direction, setDirection] = useState<'up' | 'down'>('up')
+type Direction = 'up' | 'down'
+
+function TagList({ tags, activeTag, setActiveTag }: TaglistProps) {
+  const [direction, setDirection] = useState<Direction>('up')
   const scrollRef = useRef(window.scrollY)
 
   const checkDirection = useCallback(() => {
@@ -48,21 +52,18 @@ function TagList({ tags }: TaglistProps) {
       className={`fixed top-[60px] z-10 flex w-full gap-3 overflow-hidden bg-white pb-4 pt-7 
       ${direction === 'down' ? 'translate-y-[-86px] transition-all duration-500' : 'transition-all duration-500'}`}
     >
-      {tags.map((tag) => (
-        <Tag key={tag} content={tag} />
+      {tags.map((tag, index) => (
+        <Button
+          key={tag}
+          className={`h-[42px] w-fit text-nowrap rounded-lg font-medium hover:bg-[#1618231a] 
+          ${index === activeTag ? 'bg-[#1b1b1b] text-white hover:text-text' : ''}`}
+          onClick={() => setActiveTag(index)}
+          intent={'action'}
+        >
+          {tag}
+        </Button>
       ))}
     </div>
-  )
-}
-
-function Tag({ content }: TagProps) {
-  return (
-    <Button
-      className="h-[42px] w-fit text-nowrap rounded-lg font-medium hover:bg-[#1618231a]"
-      intent={'action'}
-    >
-      {content}
-    </Button>
   )
 }
 
