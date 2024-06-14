@@ -31,7 +31,10 @@ function AuthContextProvider({ children }: AuthContextProviderProps) {
     try {
       await signInWithPopup(auth, provider)
     } catch (error) {
+      setLoading(false)
       console.log(error)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -44,6 +47,7 @@ function AuthContextProvider({ children }: AuthContextProviderProps) {
     const unsub = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser)
       localStorage.setItem('user', JSON.stringify(currentUser))
+      setLoading(false)
     })
 
     return () => unsub()

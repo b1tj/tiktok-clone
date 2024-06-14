@@ -3,96 +3,75 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 import { useAppSelector } from '@/hooks/reduxHooks'
 
-const Layout = lazy(() =>
-  import('@/layouts/Layout').then(({ Layout }) => ({ default: Layout })),
-)
-
-const HomePage = lazy(() =>
-  import('@/pages/HomePage').then(({ HomePage }) => ({ default: HomePage })),
-)
-
-const FriendsPage = lazy(() =>
-  import('@/pages/FriendsPage').then(({ FriendsPage }) => ({
-    default: FriendsPage,
-  })),
-)
-
-const ExplorePage = lazy(() =>
-  import('@/pages/ExplorePage').then(({ ExplorePage }) => ({
-    default: ExplorePage,
-  })),
-)
-
-const LivePage = lazy(() =>
-  import('@/pages/LivePage').then(({ LivePage }) => ({ default: LivePage })),
-)
-
 const ErrorPage = lazy(() =>
   import('@/pages/ErrorPage').then(({ ErrorPage }) => ({ default: ErrorPage })),
 )
-
-const FollowingPage = lazy(() =>
-  import('@/pages/FollowingPage').then(({ FollowingPage }) => ({
-    default: FollowingPage,
-  })),
-)
-
-const ProfilePage = lazy(() =>
-  import('@/pages/ProfilePage').then(({ ProfilePage }) => ({
-    default: ProfilePage,
-  })),
-)
-
-const SignUpPage = lazy(() =>
-  import('@/pages/SignUpPage').then(({ SignUpPage }) => ({
-    default: SignUpPage,
-  })),
-)
-const SignInPage = lazy(() =>
-  import('@/pages/SignInPage').then(({ SignInPage }) => ({
-    default: SignInPage,
-  })),
-)
-
 const router = createBrowserRouter([
   {
-    element: <Layout />,
+    async lazy() {
+      const { Layout } = await import('@/layouts/Layout')
+      return { Component: Layout }
+    },
     errorElement: <ErrorPage />,
     children: [
       ...['/', '/en', '/foryou'].map((path) => ({
         path,
-        element: <HomePage />,
+        async lazy() {
+          const { HomePage } = await import('@/pages/HomePage')
+          return { Component: HomePage }
+        },
       })),
       {
         path: '/following',
-        element: <FollowingPage />,
+        async lazy() {
+          const { FollowingPage } = await import('@/pages/FollowingPage')
+          return { Component: FollowingPage }
+        },
       },
       {
         path: '/friends',
-        element: <FriendsPage />,
+        async lazy() {
+          const { FriendsPage } = await import('@/pages/FriendsPage')
+          return { Component: FriendsPage }
+        },
       },
       {
         path: '/explore',
-        element: <ExplorePage />,
+        async lazy() {
+          const { ExplorePage } = await import('@/pages/ExplorePage')
+          return { Component: ExplorePage }
+        },
       },
       {
         path: '/live',
-        element: <LivePage />,
+        async lazy() {
+          const { LivePage } = await import('@/pages/LivePage')
+          return { Component: LivePage }
+        },
       },
       {
         path: '/profile',
-        element: <ProfilePage />,
+        async lazy() {
+          const { ProfilePage } = await import('@/pages/ProfilePage')
+          return { Component: ProfilePage }
+        },
       },
     ],
   },
 
   {
     path: '/signup',
-    element: <SignUpPage />,
+    async lazy() {
+      const { SignUpPage } = await import('@/pages/SignUpPage')
+      return { Component: SignUpPage }
+    },
   },
   {
     path: '/login',
-    element: <SignInPage />,
+    async lazy() {
+      const { SignInPage } = await import('@/pages/SignInPage')
+      return { Component: SignInPage }
+    },
   },
 ])
 

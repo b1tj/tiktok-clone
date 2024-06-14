@@ -30,8 +30,6 @@ export function SignInOption() {
   const { openSnackbar } = useSnackbarContext()
 
   const handleLoginGoogle = async () => {
-    setLoading(true)
-
     try {
       await googleSignIn()
       if (isAuthPage && auth.currentUser) {
@@ -46,6 +44,7 @@ export function SignInOption() {
         }, 1000)
       }
     } catch (error) {
+      setLoading(false)
       console.log(error)
     } finally {
       setLoading(false)

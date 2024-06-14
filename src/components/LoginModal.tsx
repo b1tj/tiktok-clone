@@ -13,8 +13,14 @@ export function LoginModal() {
   const [render, setRender] = useState(isShow)
   const { user } = useAuthContext()
 
-  const handleOnAnimationEnd = () => {
+  const handleOnAnimationEnd: React.AnimationEventHandler = (e) => {
+    e.stopPropagation()
     if (!isShow) setRender(false)
+  }
+
+  const onClickModalMask: React.MouseEventHandler = (e) => {
+    e.stopPropagation()
+    dispatch(close())
   }
 
   useEffect(() => {
@@ -24,9 +30,13 @@ export function LoginModal() {
 
   return (
     render && (
-      <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-[rgba(0,0,0,0.5)]">
+      <div
+        className="fixed inset-0 z-[9999] flex items-center justify-center bg-[rgba(0,0,0,0.5)]"
+        onClick={onClickModalMask}
+      >
         <div
           onAnimationEnd={handleOnAnimationEnd}
+          onClick={(e) => e.stopPropagation()}
           className={`${
             isShow
               ? 'animate-fade-jump-out animate-duration-300'
